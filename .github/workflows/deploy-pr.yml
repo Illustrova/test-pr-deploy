@@ -1,7 +1,11 @@
 name: deploy PRs for preview
 
 on:
-  pull_request
+  push:
+    branches-ignore:
+      - main
+      - gh-pages
+  
 jobs:
   deploy:
     runs-on: ubuntu-18.04
