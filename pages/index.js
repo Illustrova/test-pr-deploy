@@ -9,7 +9,7 @@ export default function IndexPage() {
         variant="6Xl"
         className="max-w-4xl mx-auto mt-4 animate-fadein animate-reveal"
       >
-        We team up with designers and developers to build and scale{"\n"}
+        team up with designers and developers to build and scale{"\n"}
         <Text as="span" variant="6Xl" highlight="yellow-100">
           design systems
         </Text>
