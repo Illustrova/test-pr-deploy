@@ -4,9 +4,12 @@ const withMDX = require("@next/mdx")({
 
 const exportPath = process.env.GORIGHT_EXPORT; // a subpath of the whole site to export files from. Passed to exportPathMap param
 const isProd = process.env.NODE_ENV === 'production'
+console.log("🚀 ~ file: next.config.js ~ line 7 ~ isProd", isProd);
 const basePath = process.env.BASEPATH || "";
+console.log("🚀 ~ file: next.config.js ~ line 9 ~ basePath", basePath);
+console.log("🚀 ~ file: next.config.js ~ line 9 ~ basePath", isProd ? basePath + "/" : '');
 
-module.exports = withMDX({
+const conf = withMDX({
   webpack: (config) => {
     config.module.rules.push({
       test: /\.svg$/,
@@ -44,6 +47,8 @@ module.exports = withMDX({
   },
   pageExtensions: ["js", "jsx", "mdx"],
   trailingSlash: true, // keep true
-  // assetPrefix: isProd ? basePath : '',
+  assetPrefix: isProd ? `${basePath}/` : "",
   basePath: isProd ? basePath : '',
 });
+
+module.exports = conf;

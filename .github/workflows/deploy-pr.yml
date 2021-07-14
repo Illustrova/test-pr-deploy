@@ -37,7 +37,7 @@ jobs:
         run: BASEPATH=/test-pr-deploy/pr:${{ steps.extract_branch.outputs.branch }} yarn build
         
       - name: Export static files for main site
-        run: yarn export
+        run: BASEPATH=/test-pr-deploy/pr:${{ steps.extract_branch.outputs.branch }} yarn export
                 
       - run: echo ${{ steps.extract_branch.outputs.branch }}
       
