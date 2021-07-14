@@ -1,7 +1,7 @@
 name: deploy PRs for preview
 
 on:
-  pull_request
+  push
 jobs:
   deploy:
     runs-on: ubuntu-18.04
