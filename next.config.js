@@ -44,6 +44,6 @@ module.exports = withMDX({
   },
   pageExtensions: ["js", "jsx", "mdx"],
   trailingSlash: true, // keep true
-  assetPrefix: isProd ? basePath + "/" : '/',
+  // assetPrefix: isProd ? basePath : '',
   basePath: isProd ? basePath : '',
 });
