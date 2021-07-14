@@ -1,7 +1,7 @@
 name: deploy PRs for preview
 
 on:
-  push
+  pull_request
 jobs:
   deploy:
     runs-on: ubuntu-18.04
@@ -47,4 +47,14 @@ jobs:
           folder: ./out
           target-folder: pr:${{ steps.extract_branch.outputs.branch }}
           branch: gh-pages
+          clean: true
+          clean-exclude: |
+            .nojekyll
+            pr:**/*
+
        
+      - name: Comment PR
+        uses: thollander/actions-comment-pull-request@master
+        with:
+          message: 'This PR was deployed automatically to: https://goright.io/pr:${{ steps.extract_branch.outputs.branch }} '
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
