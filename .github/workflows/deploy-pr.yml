@@ -27,11 +27,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-yarn-
       
-      - name: Extract branch name
-        shell: bash
-        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
-        id: extract_branch
-  
+     
       - name: Install dependencies
         run: yarn install
         
@@ -40,9 +36,7 @@ jobs:
         
       - name: Export static files for main site
         run: BASEPATH=/test-pr-deploy/pr:${{ github.event.number }} yarn export
-                
-      - run: echo ${{ steps.extract_branch.outputs.branch }}
-      
+                      
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@4.1.0
         with:
