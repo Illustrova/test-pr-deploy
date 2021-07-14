@@ -1,14 +1,12 @@
 name: deploy PRs for preview
 
 on:
-  push:
-    branches-ignore:
-      - main
-      - gh-pages
-  
+  pull_request:
+    branches: [ main ]
 jobs:
   deploy:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
+    if: ${{ github.event.number }}
     steps:
       - uses: actions/checkout@v2
 
@@ -38,10 +36,10 @@ jobs:
         run: yarn install
         
       - name: Build
-        run: BASEPATH=/test-pr-deploy/pr:${{ steps.extract_branch.outputs.branch }} yarn build
+        run: BASEPATH=/test-pr-deploy/pr:${{ github.event.number }} yarn build
         
       - name: Export static files for main site
-        run: BASEPATH=/test-pr-deploy/pr:${{ steps.extract_branch.outputs.branch }} yarn export
+        run: BASEPATH=/test-pr-deploy/pr:${{ github.event.number }} yarn export
                 
       - run: echo ${{ steps.extract_branch.outputs.branch }}
       
@@ -49,7 +47,7 @@ jobs:
         uses: JamesIves/github-pages-deploy-action@4.1.0
         with:
           folder: ./out
-          target-folder: pr:${{ steps.extract_branch.outputs.branch }}
+          target-folder: pr:${{ github.event.number }}/
           branch: gh-pages
           clean: true
           clean-exclude: |
@@ -57,8 +55,14 @@ jobs:
             pr:**/*
 
        
-      - name: Comment PR
-        uses: thollander/actions-comment-pull-request@master
+      - id: get-preview-url
+        name: Get preview url
+        run: echo "::set-output name=preview-url::https://goright.io/pr:${{ github.event.number }}"
+        shell: bash
+      - name: Post Preview Comment
+        uses: phulsechinmay/rewritable-pr-comment@v0.3.0
         with:
-          message: 'This PR was deployed automatically to: https://goright.io/pr:${{ steps.extract_branch.outputs.branch }} '
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          COMMENT_IDENTIFIER: GoRight_preview_comment
+          message: |
+            A preview of this PR can be found at ${{ steps.get-preview-url.outputs.preview-url }}.
