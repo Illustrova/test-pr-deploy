@@ -2,7 +2,9 @@ const withMDX = require("@next/mdx")({
   extension: /\.mdx?$/,
 });
 
-const exportPath = process.env.GORIGHT_EXPORT;
+const exportPath = process.env.GORIGHT_EXPORT; // a subpath of the whole site to export files from. Passed to exportPathMap param
+const isProd = process.env.NODE_ENV === 'production'
+const basePath = process.env.BASEPATH || "";
 
 module.exports = withMDX({
   webpack: (config) => {
@@ -42,4 +44,6 @@ module.exports = withMDX({
   },
   pageExtensions: ["js", "jsx", "mdx"],
   trailingSlash: true, // keep true
+  assetPrefix: isProd ? basePath : '',
+  basePath: isProd ? basePath : '',
 });

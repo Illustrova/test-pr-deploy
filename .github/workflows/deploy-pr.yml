@@ -34,7 +34,7 @@ jobs:
         run: yarn install
         
       - name: Build
-        run: yarn build
+        run: BASEPATH=test/pr-action/pr:${{ steps.extract_branch.outputs.branch }} yarn build
         
       - name: Export static files for main site
         run: yarn export
